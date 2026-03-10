@@ -1,600 +1,568 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Performance Rapport - TrygTand</title>
-   <script src="https://cdn.tailwindcss.com"></script>
-   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-   <style>
-       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-       body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-      
-       .metric-card {
-           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-           cursor: pointer;
-           position: relative;
-           border: 1px solid #e2e8f0;
-       }
-       .metric-card:hover {
-           transform: translateY(-6px);
-           box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-           border-color: #3b82f6;
-       }
-      
-       .tab-button { border-bottom: 3px solid transparent; transition: all 0.3s ease; white-space: nowrap; }
-       .tab-active {
-           border-bottom: 3px solid #1e40af;
-           color: #1e40af;
-           background-color: #eff6ff;
-       }
-      
-       .modal-overlay { transition: opacity 0.3s ease; }
-       .modal-content { transition: transform 0.3s ease; }
-       .hidden-modal { opacity: 0; pointer-events: none; }
-       .hidden-modal .modal-content { transform: scale(0.95); }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Rapport - TrygTand</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        
+        .metric-card { 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            cursor: pointer; 
+            position: relative;
+            border: 1px solid #e2e8f0;
+        }
+        .metric-card:hover { 
+            transform: translateY(-6px); 
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); 
+            border-color: #3b82f6;
+        }
+        
+        .tab-button { border-bottom: 3px solid transparent; transition: all 0.3s ease; white-space: nowrap; }
+        .tab-active { 
+            border-bottom: 3px solid #1e40af; 
+            color: #1e40af; 
+            background-color: #eff6ff;
+        }
+        
+        .modal-overlay { transition: opacity 0.3s ease; }
+        .modal-content { transition: transform 0.3s ease; }
+        .hidden-modal { opacity: 0; pointer-events: none; }
+        .hidden-modal .modal-content { transform: scale(0.95); }
 
+        .change-badge {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+        }
 
-       .change-badge {
-           font-size: 0.7rem;
-           padding: 2px 6px;
-           border-radius: 9999px;
-           font-weight: 700;
-           display: inline-flex;
-           align-items: center;
-       }
-
-
-       .channel-row {
-           display: flex;
-           justify-content: space-between;
-           align-items: center;
-           padding: 0.75rem 0;
-           border-bottom: 1px solid #f1f5f9;
-       }
-       .channel-row:last-child { border-bottom: none; }
-   </style>
+        .channel-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .channel-row:last-child { border-bottom: none; }
+    </style>
 </head>
 <body class="p-4 md:p-8">
-   <div class="max-w-5xl mx-auto">
-      
-       <!-- Header -->
-       <header class="bg-white rounded-t-2xl shadow-sm p-6 border-x border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
-           <div>
-               <h1 class="text-2xl font-bold text-gray-800">Performance Rapport</h1>
-               <p class="text-gray-500 font-medium italic">TrygTand | Marketing Intelligence</p>
-           </div>
-           <div class="flex flex-col md:flex-row items-center gap-3">
-               <span class="bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold" id="dateRangeDisplay">
-                   <i class="far fa-calendar-alt mr-2"></i>1. mar 2026 - 31. mar 2026
-               </span>
-           </div>
-       </header>
+    <div class="max-w-5xl mx-auto">
+        
+        <!-- Header -->
+        <header class="bg-white rounded-t-2xl shadow-sm p-6 border-x border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Performance Rapport</h1>
+                <p class="text-gray-500 font-medium italic">TrygTand | Marketing Intelligence</p>
+            </div>
+            <div class="flex flex-col md:flex-row items-center gap-3">
+                <span class="bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold" id="dateRangeDisplay">
+                    <i class="far fa-calendar-alt mr-2"></i>1. mar 2026 - 31. mar 2026
+                </span>
+            </div>
+        </header>
 
+        <!-- Month Navigation -->
+        <nav class="bg-white border-x border-b border-gray-100 rounded-b-2xl shadow-sm mb-8 flex overflow-x-auto">
+            <button onclick="switchMonth('marts')" id="tab-marts" class="tab-button px-6 md:px-10 py-4 font-bold text-gray-400 hover:text-gray-600 transition-all tab-active">
+                MARTS
+            </button>
+            <button onclick="switchMonth('februar')" id="tab-februar" class="tab-button px-6 md:px-10 py-4 font-bold text-gray-400 hover:text-gray-600 transition-all">
+                FEBRUAR
+            </button>
+            <button onclick="switchMonth('januar')" id="tab-januar" class="tab-button px-6 md:px-10 py-4 font-bold text-gray-400 hover:text-gray-600 transition-all">
+                JANUAR
+            </button>
+        </nav>
 
-       <!-- Month Navigation -->
-       <nav class="bg-white border-x border-b border-gray-100 rounded-b-2xl shadow-sm mb-8 flex overflow-x-auto">
-           <button onclick="switchMonth('marts')" id="tab-marts" class="tab-button px-6 md:px-10 py-4 font-bold text-gray-400 hover:text-gray-600 transition-all tab-active">
-               MARTS
-           </button>
-           <button onclick="switchMonth('februar')" id="tab-februar" class="tab-button px-6 md:px-10 py-4 font-bold text-gray-400 hover:text-gray-600 transition-all">
-               FEBRUAR
-           </button>
-           <button onclick="switchMonth('januar')" id="tab-januar" class="tab-button px-6 md:px-10 py-4 font-bold text-gray-400 hover:text-gray-600 transition-all">
-               JANUAR
-           </button>
-       </nav>
+        <!-- Google Ads Section -->
+        <div class="mb-12">
+            <div class="flex items-center justify-center gap-4 mb-6">
+                <!-- Branded Google Ads Logo from provided URL -->
+                <img src="https://www.svgrepo.com/show/353800/google-ads.svg" alt="Google Ads" class="w-8 h-8 object-contain">
+                <h4 class="text-lg font-bold text-gray-800 uppercase tracking-widest text-sm">Google Ads Performance</h4>
+            </div>
 
+            <!-- Google Ads KPI Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div onclick="openModal('impressions')" class="metric-card bg-white p-6 rounded-2xl shadow-sm border-l-4 border-blue-500 group">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 flex justify-between">Eksponeringer <i class="fas fa-expand-alt text-[10px] mt-1 opacity-20 group-hover:opacity-100 transition-opacity"></i></p>
+                    <div class="flex items-baseline gap-2">
+                        <h3 class="text-2xl font-bold text-gray-800" id="stat-impressions">8.266</h3>
+                        <span id="change-impressions" class="change-badge"></span>
+                    </div>
+                </div>
+                <div onclick="openModal('clicks')" class="metric-card bg-white p-6 rounded-2xl shadow-sm border-l-4 border-yellow-500 group">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 flex justify-between">Klik <i class="fas fa-expand-alt text-[10px] mt-1 opacity-20 group-hover:opacity-100 transition-opacity"></i></p>
+                    <div class="flex items-baseline gap-2">
+                        <h3 class="text-2xl font-bold text-gray-800" id="stat-clicks">400</h3>
+                        <span id="change-clicks" class="change-badge"></span>
+                    </div>
+                </div>
+                <div onclick="openModal('conversions')" class="metric-card bg-white p-6 rounded-2xl shadow-sm border-l-4 border-green-500 group">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 flex justify-between">Konverteringer <i class="fas fa-expand-alt text-[10px] mt-1 opacity-20 group-hover:opacity-100 transition-opacity"></i></p>
+                    <div class="flex items-baseline gap-2">
+                        <h3 class="text-2xl font-bold text-gray-800" id="stat-conversions">98</h3>
+                        <span id="change-conversions" class="change-badge"></span>
+                    </div>
+                </div>
+                <div onclick="openModal('cost')" class="metric-card bg-white p-6 rounded-2xl shadow-sm border-l-4 border-red-500 group">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 flex justify-between">Samlet Pris <i class="fas fa-expand-alt text-[10px] mt-1 opacity-20 group-hover:opacity-100 transition-opacity"></i></p>
+                    <div class="flex items-baseline gap-2">
+                        <h3 class="text-2xl font-bold text-gray-800" id="stat-cost">4.459,93 kr.</h3>
+                        <span id="change-cost" class="change-badge"></span>
+                    </div>
+                </div>
+            </div>
 
-       <!-- Google Ads Section -->
-       <div class="mb-12">
-           <div class="flex items-center justify-center gap-3 mb-6">
-               <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-sm">
-                   <i class="fab fa-google"></i>
-               </div>
-               <h4 class="text-lg font-bold text-gray-800 uppercase tracking-widest text-sm">Google Ads Performance</h4>
-           </div>
+            <!-- Google Ads Efficiency -->
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-8 text-center">
+                <div class="flex flex-col md:flex-row justify-around gap-8">
+                    <div onclick="openModal('cpa')" class="cursor-pointer group">
+                        <p class="text-gray-500 text-sm mb-1 group-hover:text-blue-600 transition-colors">Pris pr. konvertering <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
+                        <div class="flex flex-col items-center">
+                            <p class="text-3xl font-bold text-gray-800" id="stat-cpa">45,51 kr.</p>
+                            <span id="change-cpa" class="change-badge mt-1"></span>
+                        </div>
+                    </div>
+                    <div class="hidden md:block w-px bg-gray-100"></div>
+                    <div onclick="openModal('ctr')" class="cursor-pointer group">
+                        <p class="text-gray-500 text-sm mb-1 group-hover:text-blue-600 transition-colors">Klikrate (CTR) <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
+                        <div class="flex flex-col items-center">
+                            <p class="text-3xl font-bold text-gray-800" id="stat-ctr-big">4,84 %</p>
+                            <span id="change-ctr" class="change-badge mt-1"></span>
+                        </div>
+                    </div>
+                    <div class="hidden md:block w-px bg-gray-100"></div>
+                    <div onclick="openModal('cpc')" class="cursor-pointer group">
+                        <p class="text-gray-500 text-sm mb-1 group-hover:text-blue-600 transition-colors">Gns. CPC <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
+                        <div class="flex flex-col items-center">
+                            <p class="text-3xl font-bold text-gray-800" id="stat-cpc-big">11,15 kr.</p>
+                            <span id="change-cpc-evol" class="change-badge mt-1"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <!-- GA4 Details Section -->
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-12">
+            <h4 class="text-center text-lg font-bold text-gray-800 mb-8 uppercase tracking-widest text-sm">Henvendelser fordelt (GA4)</h4>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div onclick="openModal('conv_booking')" class="metric-card flex flex-col p-5 bg-blue-50 rounded-2xl border border-blue-100 group">
+                    <div class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg mb-3 shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-[10px] font-bold text-blue-600 uppercase tracking-wide">Booking System</p>
+                        <p class="text-2xl font-bold text-gray-800" id="stat-booking">74</p>
+                    </div>
+                </div>
+                <div onclick="openModal('conv_calls')" class="metric-card flex flex-col p-5 bg-emerald-50 rounded-2xl border border-emerald-100 group">
+                    <div class="w-10 h-10 bg-emerald-600 text-white rounded-xl flex items-center justify-center text-lg mb-3 shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fas fa-phone-volume"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-wide">Opkald</p>
+                        <p class="text-2xl font-bold text-gray-800" id="stat-calls">26</p>
+                    </div>
+                </div>
+                <div onclick="openModal('conv_web')" class="metric-card flex flex-col p-5 bg-indigo-50 rounded-2xl border border-indigo-100 group">
+                    <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center text-lg mb-3 shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-[10px] font-bold text-indigo-600 uppercase tracking-wide">E-mail Klik</p>
+                        <p class="text-2xl font-bold text-gray-800" id="stat-website-clicks">1</p>
+                    </div>
+                </div>
+                <div onclick="openModal('conv_forms')" class="metric-card flex flex-col p-5 bg-amber-50 rounded-2xl border border-amber-100 group">
+                    <div class="w-10 h-10 bg-amber-600 text-white rounded-xl flex items-center justify-center text-lg mb-3 shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-[10px] font-bold text-amber-600 uppercase tracking-wide">Formularer</p>
+                        <p class="text-2xl font-bold text-gray-800" id="stat-forms">1</p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-[10px] text-gray-400 mt-4 italic">* Klik på en kategori for at se kanal-fordeling.</p>
+        </div>
 
-           <!-- Google Ads KPI Grid -->
-           <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-               <div onclick="openModal('impressions')" class="metric-card bg-white p-6 rounded-2xl shadow-sm border-l-4 border-blue-500 group">
-                   <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 flex justify-between">Eksponeringer <i class="fas fa-expand-alt text-[10px] mt-1 opacity-20 group-hover:opacity-100 transition-opacity"></i></p>
-                   <div class="flex items-baseline gap-2">
-                       <h3 class="text-2xl font-bold text-gray-800" id="stat-impressions">8.266</h3>
-                       <span id="change-impressions" class="change-badge"></span>
-                   </div>
-               </div>
-               <div onclick="openModal('clicks')" class="metric-card bg-white p-6 rounded-2xl shadow-sm border-l-4 border-yellow-500 group">
-                   <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 flex justify-between">Klik <i class="fas fa-expand-alt text-[10px] mt-1 opacity-20 group-hover:opacity-100 transition-opacity"></i></p>
-                   <div class="flex items-baseline gap-2">
-                       <h3 class="text-2xl font-bold text-gray-800" id="stat-clicks">400</h3>
-                       <span id="change-clicks" class="change-badge"></span>
-                   </div>
-               </div>
-               <div onclick="openModal('conversions')" class="metric-card bg-white p-6 rounded-2xl shadow-sm border-l-4 border-green-500 group">
-                   <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 flex justify-between">Konverteringer <i class="fas fa-expand-alt text-[10px] mt-1 opacity-20 group-hover:opacity-100 transition-opacity"></i></p>
-                   <div class="flex items-baseline gap-2">
-                       <h3 class="text-2xl font-bold text-gray-800" id="stat-conversions">98</h3>
-                       <span id="change-conversions" class="change-badge"></span>
-                   </div>
-               </div>
-               <div onclick="openModal('cost')" class="metric-card bg-white p-6 rounded-2xl shadow-sm border-l-4 border-red-500 group">
-                   <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 flex justify-between">Samlet Pris <i class="fas fa-expand-alt text-[10px] mt-1 opacity-20 group-hover:opacity-100 transition-opacity"></i></p>
-                   <div class="flex items-baseline gap-2">
-                       <h3 class="text-2xl font-bold text-gray-800" id="stat-cost">4.459,93 kr.</h3>
-                       <span id="change-cost" class="change-badge"></span>
-                   </div>
-               </div>
-           </div>
+        <!-- Meta Ads Performance -->
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+            <div class="flex items-center justify-center gap-4 mb-8">
+                <!-- Branded Meta Logo from provided URL -->
+                <img src="https://logoeps.com/wp-content/uploads/2021/10/meta-logoeps.com_.png" alt="Meta Ads" class="w-10 h-10 object-contain">
+                <h4 class="text-lg font-bold text-gray-800 uppercase tracking-widest text-sm">Meta Ads Performance</h4>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+                <div onclick="openModal('meta_impressions')" class="metric-card p-5 bg-slate-50 rounded-2xl border border-slate-100 group">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex justify-between">Eksponeringer <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
+                    <div class="flex items-baseline gap-2">
+                        <p class="text-xl font-black text-slate-800" id="meta-impressions">12.462</p>
+                        <span id="change-meta-impressions" class="change-badge"></span>
+                    </div>
+                </div>
+                <div onclick="openModal('meta_reach')" class="metric-card p-5 bg-slate-50 rounded-2xl border border-slate-100 group">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex justify-between">Rækkevidde <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
+                    <div class="flex items-baseline gap-2">
+                        <p class="text-xl font-black text-slate-800" id="meta-reach">5.357</p>
+                        <span id="change-meta-reach" class="change-badge"></span>
+                    </div>
+                </div>
+                <div onclick="openModal('meta_clicks')" class="metric-card p-5 bg-slate-50 rounded-2xl border border-slate-100 group">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex justify-between">Link-klik <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
+                    <div class="flex items-baseline gap-2">
+                        <p class="text-xl font-black text-slate-800" id="meta-clicks">82</p>
+                        <span id="change-meta-clicks" class="change-badge"></span>
+                    </div>
+                </div>
+                <div onclick="openModal('meta_cost')" class="metric-card p-5 bg-slate-50 rounded-2xl border border-slate-100 group">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex justify-between">Forbrug <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
+                    <div class="flex items-baseline gap-2">
+                        <p class="text-xl font-black text-slate-800" id="meta-cost">1.477,98 kr.</p>
+                        <span id="change-meta-cost" class="change-badge"></span>
+                    </div>
+                </div>
+                <div onclick="openModal('meta_cpc')" class="metric-card p-5 bg-slate-50 rounded-2xl border border-slate-100 group">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex justify-between">Gns. CPC <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
+                    <div class="flex items-baseline gap-2">
+                        <p class="text-xl font-black text-slate-800" id="meta-cpc">18,02 kr.</p>
+                        <span id="change-meta-cpc" class="change-badge"></span>
+                    </div>
+                </div>
+                <div onclick="openModal('meta_ctr')" class="metric-card p-5 bg-slate-50 rounded-2xl border border-slate-100 group">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex justify-between">Klikrate (CTR) <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
+                    <div class="flex items-baseline gap-2">
+                        <p class="text-xl font-black text-slate-800" id="meta-ctr">0,66%</p>
+                        <span id="change-meta-ctr" class="change-badge"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <footer class="mt-12 pb-8 text-center text-gray-400 text-sm">
+            <p>&copy; 2026 TrygTand Performance Rapport | GA4, Google Ads & Meta integration</p>
+        </footer>
+    </div>
 
-           <!-- Google Ads Efficiency -->
-           <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-8 text-center">
-               <div class="flex flex-col md:flex-row justify-around gap-8">
-                   <div onclick="openModal('cpa')" class="cursor-pointer group">
-                       <p class="text-gray-500 text-sm mb-1 group-hover:text-blue-600 transition-colors">Pris pr. konvertering <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
-                       <div class="flex flex-col items-center">
-                           <p class="text-3xl font-bold text-gray-800" id="stat-cpa">45,51 kr.</p>
-                           <span id="change-cpa" class="change-badge mt-1"></span>
-                       </div>
-                   </div>
-                   <div class="hidden md:block w-px bg-gray-100"></div>
-                   <div onclick="openModal('ctr')" class="cursor-pointer group">
-                       <p class="text-gray-500 text-sm mb-1 group-hover:text-blue-600 transition-colors">Klikrate (CTR) <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
-                       <div class="flex flex-col items-center">
-                           <p class="text-3xl font-bold text-gray-800" id="stat-ctr-big">4,84 %</p>
-                           <span id="change-ctr" class="change-badge mt-1"></span>
-                       </div>
-                   </div>
-                   <div class="hidden md:block w-px bg-gray-100"></div>
-                   <div onclick="openModal('cpc')" class="cursor-pointer group">
-                       <p class="text-gray-500 text-sm mb-1 group-hover:text-blue-600 transition-colors">Gns. CPC <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
-                       <div class="flex flex-col items-center">
-                           <p class="text-3xl font-bold text-gray-800" id="stat-cpc-big">11,15 kr.</p>
-                           <span id="change-cpc-evol" class="change-badge mt-1"></span>
-                       </div>
-                   </div>
-               </div>
-           </div>
-       </div>
+    <!-- Global Modal Overlay -->
+    <div id="modalOverlay" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 modal-overlay hidden-modal" onclick="closeModal(event)">
+        <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl modal-content p-8 relative max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <button onclick="closeModal(event)" class="absolute top-6 right-6 text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <div id="modalIconContainer" class="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-6"></div>
+            <h2 id="modalTitle" class="text-2xl font-bold text-gray-800 mb-2"></h2>
+            <p id="modalDefinition" class="text-gray-600 text-sm leading-relaxed mb-6 italic"></p>
+            
+            <div class="bg-gray-50 rounded-2xl p-6 mb-6">
+                <div class="flex justify-between items-end mb-4">
+                    <p class="text-xs font-bold text-gray-400 uppercase">Status valgt periode</p>
+                    <div class="flex flex-col items-end">
+                        <p id="modalValue" class="text-3xl font-bold text-gray-800"></p>
+                        <span id="modalValueChange" class="change-badge mt-1"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="space-y-4">
+                <h4 id="modalDetailTitle" class="font-bold text-gray-800 text-sm uppercase tracking-wide border-b pb-2">Detaljeret Indblik</h4>
+                <div id="modalDetailContainer" class="divide-y divide-gray-100">
+                    <!-- Dynamic content injected here -->
+                </div>
+            </div>
 
+            <button onclick="closeModal(event)" class="w-full mt-8 bg-gray-800 text-white font-bold py-4 rounded-xl hover:bg-gray-900 transition-colors">
+                Luk vindue
+            </button>
+        </div>
+    </div>
 
-       <!-- GA4 Details Section -->
-       <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-12">
-           <h4 class="text-center text-lg font-bold text-gray-800 mb-8 uppercase tracking-widest text-sm">Henvendelser fordelt (GA4)</h4>
-           <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-               <div onclick="openModal('conv_booking')" class="metric-card flex flex-col p-5 bg-blue-50 rounded-2xl border border-blue-100 group">
-                   <div class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg mb-3 shadow-sm group-hover:scale-110 transition-transform">
-                       <i class="fas fa-calendar-check"></i>
-                   </div>
-                   <div class="flex-1">
-                       <p class="text-[10px] font-bold text-blue-600 uppercase tracking-wide">Booking System</p>
-                       <p class="text-2xl font-bold text-gray-800" id="stat-booking">74</p>
-                   </div>
-               </div>
-               <div onclick="openModal('conv_calls')" class="metric-card flex flex-col p-5 bg-emerald-50 rounded-2xl border border-emerald-100 group">
-                   <div class="w-10 h-10 bg-emerald-600 text-white rounded-xl flex items-center justify-center text-lg mb-3 shadow-sm group-hover:scale-110 transition-transform">
-                       <i class="fas fa-phone-volume"></i>
-                   </div>
-                   <div class="flex-1">
-                       <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-wide">Opkald</p>
-                       <p class="text-2xl font-bold text-gray-800" id="stat-calls">26</p>
-                   </div>
-               </div>
-               <div onclick="openModal('conv_web')" class="metric-card flex flex-col p-5 bg-indigo-50 rounded-2xl border border-indigo-100 group">
-                   <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center text-lg mb-3 shadow-sm group-hover:scale-110 transition-transform">
-                       <i class="fas fa-envelope"></i>
-                   </div>
-                   <div class="flex-1">
-                       <p class="text-[10px] font-bold text-indigo-600 uppercase tracking-wide">E-mail Klik</p>
-                       <p class="text-2xl font-bold text-gray-800" id="stat-website-clicks">1</p>
-                   </div>
-               </div>
-               <div onclick="openModal('conv_forms')" class="metric-card flex flex-col p-5 bg-amber-50 rounded-2xl border border-amber-100 group">
-                   <div class="w-10 h-10 bg-amber-600 text-white rounded-xl flex items-center justify-center text-lg mb-3 shadow-sm group-hover:scale-110 transition-transform">
-                       <i class="fas fa-file-contract"></i>
-                   </div>
-                   <div class="flex-1">
-                       <p class="text-[10px] font-bold text-amber-600 uppercase tracking-wide">Formularer</p>
-                       <p class="text-2xl font-bold text-gray-800" id="stat-forms">1</p>
-                   </div>
-               </div>
-           </div>
-           <p class="text-center text-[10px] text-gray-400 mt-4 italic">* Klik på en kategori for at se kanal-fordeling.</p>
-       </div>
+    <script>
+        let currentMonth = 'marts';
+        const monthOrder = ['januar', 'februar', 'marts'];
+        
+        const data = {
+            januar: {
+                dateRange: "1. jan 2026 - 31. jan 2026",
+                impressions: "65.973", clicks: "1.685", ctr: "2,55%", conversions: "333", cost: "14.793,17 kr.", cpc: "8,78 kr.", cpa: "44,46 kr.",
+                conversionTypes: { booking: 264, calls: 115, websiteClicks: 12, forms: 8 },
+                channels: {
+                    conv_booking: { "PerformanceMax": 174, "Direkte link": 20, "Organisk Søgning": 13, "Organisk SoMe": 6, "Google Ads": 32, "Paid Social": 12, "Refereret": 1, "Unassigned": 6 },
+                    conv_calls: { "PerformanceMax": 76, "Direkte link": 11, "Organisk Søgning": 8, "Google Ads": 15, "Paid Social": 3, "Unassigned": 2 },
+                    conv_web: { "PerformanceMax": 8, "Direkte link": 1, "Organisk Søgning": 2, "Organisk SoMe": 1 },
+                    conv_forms: { "PerformanceMax": 7, "Paid Social": 1 }
+                },
+                metaAds: { impressions: "40.233", reach: "12.033", clicks: "489", cost: "4.560,25 kr.", cpc: "9,33 kr.", ctr: "1,22%" },
+                changes: null,
+                modalDetails: {
+                    impressions: { icon: 'fa-search', color: 'blue', def: 'Visninger af dine annoncer på Google.' },
+                    clicks: { icon: 'fa-mouse-pointer', color: 'yellow', def: 'Klik på dine Google søge- og PerformanceMax annoncer.' },
+                    conversions: { icon: 'fa-shopping-cart', color: 'green', def: 'Samlet antal henvendelser sporet via Google Ads.' },
+                    cost: { icon: 'fa-coins', color: 'red', def: 'Den samlede annonce-investering på Google.' },
+                    cpa: { icon: 'fa-hand-holding-usd', color: 'blue', def: 'Prisen pr. henvendelse i gennemsnit på Google.' },
+                    ctr: { icon: 'fa-percentage', color: 'yellow', def: 'Klikrate på Google Ads.' },
+                    cpc: { icon: 'fa-tag', color: 'red', def: 'Gennemsnitsprisen pr. klik på Google.' },
+                    conv_booking: { icon: 'fa-calendar-check', color: 'blue', def: 'Gennemførte klik til bookingsystemet.' },
+                    conv_calls: { icon: 'fa-phone-volume', color: 'green', def: 'Direkte telefonopkald via websitet.' },
+                    conv_web: { icon: 'fa-envelope', color: 'indigo', def: 'Klik på e-mail adresser.' },
+                    conv_forms: { icon: 'fa-file-contract', color: 'red', def: 'Indsendte kontaktformularer.' },
+                    meta_impressions: { icon: 'fa-eye', color: 'blue', def: 'Antal gange din Meta annonce er vist.' },
+                    meta_reach: { icon: 'fa-users', color: 'blue', def: 'Antal unikke personer der har set annoncen på Meta.' },
+                    meta_clicks: { icon: 'fa-hand-pointer', color: 'yellow', def: 'Antal link-klik på Meta annoncer.' },
+                    meta_cost: { icon: 'fa-wallet', color: 'red', def: 'Samlet forbrug på Meta Ads platformen.' },
+                    meta_cpc: { icon: 'fa-tag', color: 'red', def: 'Gennemsnitspris pr. link-klik på Meta.' },
+                    meta_ctr: { icon: 'fa-chart-line', color: 'yellow', def: 'Klikrate (CTR) for dine Meta kampagner.' }
+                }
+            },
+            februar: {
+                dateRange: "1. feb 2026 - 28. feb 2026",
+                impressions: "27.428", clicks: "1.392", ctr: "5,08%", conversions: "271", cost: "14.451,32 kr.", cpc: "10,38 kr.", cpa: "53,33 kr.",
+                conversionTypes: { booking: 203, calls: 78, websiteClicks: 14, forms: 6 },
+                channels: {
+                    conv_booking: { "PerformanceMax": 152, "Direkte link": 9, "Organisk Søgning": 17, "Organisk SoMe": 10, "Google Ads": 3, "Paid Social": 12 },
+                    conv_calls: { "PerformanceMax": 51, "Direkte link": 6, "Organisk Søgning": 3, "Organisk SoMe": 2, "Google Ads": 13, "Paid Social": 2, "Unassigned": 1 },
+                    conv_web: { "PerformanceMax": 6, "Organisk Søgning": 5, "Organisk SoMe": 1, "Google Ads": 2 },
+                    conv_forms: { "PerformanceMax": 3, "Direkte link": 2, "Organisk Søgning": 1 }
+                },
+                metaAds: { impressions: "44.067", reach: "10.826", clicks: "506", cost: "4.188,81 kr.", cpc: "8,28 kr.", ctr: "1,15%" },
+                changes: {
+                    impressions: { val: '-58,4%', pos: false }, clicks: { val: '-17,4%', pos: false }, conversions: { val: '-18,6%', pos: false },
+                    cost: { val: '-2,3%', pos: true }, cpa: { val: '+20,0%', pos: false }, ctr: { val: '+99,2%', pos: true }, cpc: { val: '+18,2%', pos: false },
+                    meta_impressions: { val: '+9,5%', pos: true }, meta_reach: { val: '-10,0%', pos: false }, meta_clicks: { val: '+3,5%', pos: true },
+                    meta_cost: { val: '-8,1%', pos: true }, meta_cpc: { val: '-11,3%', pos: true }, meta_ctr: { val: '-5,7%', pos: false }
+                }
+            },
+            marts: {
+                dateRange: "1. mar 2026 - 31. mar 2026",
+                impressions: "8.266", clicks: "400", ctr: "4,84%", conversions: "98", cost: "4.459,93 kr.", cpc: "11,15 kr.", cpa: "45,51 kr.",
+                conversionTypes: { booking: 74, calls: 26, websiteClicks: 1, forms: 1 },
+                channels: {
+                    conv_booking: { "PerformanceMax": 50, "Direkte link": 1, "Organisk Søgning": 8, "Organisk SoMe": 1, "Google Ads": 3, "Paid Social": 1, "Unassigned": 10 },
+                    conv_calls: { "PerformanceMax": 18, "Organisk Søgning": 2, "Google Ads": 4, "Unassigned": 2 },
+                    conv_web: { "PerformanceMax": 1 },
+                    conv_forms: { "Direkte link": 1 }
+                },
+                metaAds: { impressions: "12.462", reach: "5.357", clicks: "82", cost: "1.477,98 kr.", cpc: "18,02 kr.", ctr: "0,66%" },
+                changes: {
+                    impressions: { val: '-69,8%', pos: false }, clicks: { val: '-71,3%', pos: false }, conversions: { val: '-63,8%', pos: false },
+                    cost: { val: '-69,1%', pos: true }, cpa: { val: '-14,6%', pos: true }, ctr: { val: '-4,7%', pos: false }, cpc: { val: '+7,4%', pos: false },
+                    meta_impressions: { val: '-71,7%', pos: false }, meta_reach: { val: '-50,5%', pos: false }, meta_clicks: { val: '-83,8%', pos: false },
+                    meta_cost: { val: '-64,7%', pos: true }, meta_cpc: { val: '+117,6%', pos: false }, meta_ctr: { val: '-42,6%', pos: false }
+                }
+            }
+        };
 
+        function parseVal(str) {
+            if (!str) return 0;
+            if (typeof str === 'number') return str;
+            let cleaned = str.toString().replace(' kr.', '').replace('%', '').replace(/\./g, '').replace(',', '.').trim();
+            return parseFloat(cleaned) || 0;
+        }
 
-       <!-- Meta Ads Performance -->
-       <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
-           <div class="flex items-center justify-center gap-3 mb-8">
-               <div class="w-8 h-8 bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-sm">
-                   <i class="fab fa-meta"></i>
-               </div>
-               <h4 class="text-lg font-bold text-gray-800 uppercase tracking-widest text-sm">Meta Ads Performance</h4>
-           </div>
-          
-           <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
-               <div onclick="openModal('meta_impressions')" class="metric-card p-5 bg-slate-50 rounded-2xl border border-slate-100 group">
-                   <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex justify-between">Eksponeringer <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
-                   <div class="flex items-baseline gap-2">
-                       <p class="text-xl font-black text-slate-800" id="meta-impressions">12.462</p>
-                       <span id="change-meta-impressions" class="change-badge"></span>
-                   </div>
-               </div>
-               <div onclick="openModal('meta_reach')" class="metric-card p-5 bg-slate-50 rounded-2xl border border-slate-100 group">
-                   <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex justify-between">Rækkevidde <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
-                   <div class="flex items-baseline gap-2">
-                       <p class="text-xl font-black text-slate-800" id="meta-reach">5.357</p>
-                       <span id="change-meta-reach" class="change-badge"></span>
-                   </div>
-               </div>
-               <div onclick="openModal('meta_clicks')" class="metric-card p-5 bg-slate-50 rounded-2xl border border-slate-100 group">
-                   <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex justify-between">Link-klik <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
-                   <div class="flex items-baseline gap-2">
-                       <p class="text-xl font-black text-slate-800" id="meta-clicks">82</p>
-                       <span id="change-meta-clicks" class="change-badge"></span>
-                   </div>
-               </div>
-               <div onclick="openModal('meta_cost')" class="metric-card p-5 bg-slate-50 rounded-2xl border border-slate-100 group">
-                   <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex justify-between">Forbrug <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
-                   <div class="flex items-baseline gap-2">
-                       <p class="text-xl font-black text-slate-800" id="meta-cost">1.477,98 kr.</p>
-                       <span id="change-meta-cost" class="change-badge"></span>
-                   </div>
-               </div>
-               <div onclick="openModal('meta_cpc')" class="metric-card p-5 bg-slate-50 rounded-2xl border border-slate-100 group">
-                   <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex justify-between">Gns. CPC <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
-                   <div class="flex items-baseline gap-2">
-                       <p class="text-xl font-black text-slate-800" id="meta-cpc">18,02 kr.</p>
-                       <span id="change-meta-cpc" class="change-badge"></span>
-                   </div>
-               </div>
-               <div onclick="openModal('meta_ctr')" class="metric-card p-5 bg-slate-50 rounded-2xl border border-slate-100 group">
-                   <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex justify-between">Klikrate (CTR) <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
-                   <div class="flex items-baseline gap-2">
-                       <p class="text-xl font-black text-slate-800" id="meta-ctr">0,66%</p>
-                       <span id="change-meta-ctr" class="change-badge"></span>
-                   </div>
-               </div>
-           </div>
-       </div>
+        function setChange(elementId, changeData) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            if (!changeData) {
+                el.style.display = 'none';
+                return;
+            }
+            el.style.display = 'inline-flex';
+            el.className = `change-badge ${changeData.pos ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`;
+            el.innerHTML = `<i class="fas fa-arrow-${changeData.val.startsWith('+') ? 'up' : 'down'} mr-1"></i> ${changeData.val}`;
+        }
 
+        function getMetricValue(month, metricType) {
+            const m = data[month];
+            if (metricType.startsWith('meta_')) {
+                const cleanType = metricType.replace('meta_', '');
+                return m.metaAds[cleanType];
+            }
+            if(metricType === 'impressions') return m.impressions;
+            if(metricType === 'clicks') return m.clicks;
+            if(metricType === 'conversions') return m.conversions;
+            if(metricType === 'cost') return m.cost;
+            if(metricType === 'cpa') return m.cpa;
+            if(metricType === 'ctr') return m.ctr;
+            if(metricType === 'cpc') return m.cpc;
+            if(metricType === 'conv_booking') return m.conversionTypes.booking;
+            if(metricType === 'conv_calls') return m.conversionTypes.calls;
+            if(metricType === 'conv_web') return m.conversionTypes.websiteClicks;
+            if(metricType === 'conv_forms') return m.conversionTypes.forms;
+            return "0";
+        }
 
-       <footer class="mt-12 pb-8 text-center text-gray-400 text-sm">
-           <p>&copy; 2026 TrygTand Performance Rapport | GA4, Google Ads & Meta integration</p>
-       </footer>
-   </div>
+        function openModal(metricType) {
+            const currentIdx = monthOrder.indexOf(currentMonth);
+            const mData = data[currentMonth];
+            const detail = data.januar.modalDetails[metricType];
+            
+            const overlay = document.getElementById('modalOverlay');
+            const iconContainer = document.getElementById('modalIconContainer');
+            const title = document.getElementById('modalTitle');
+            const def = document.getElementById('modalDefinition');
+            const value = document.getElementById('modalValue');
+            const valueChange = document.getElementById('modalValueChange');
+            const detailContainer = document.getElementById('modalDetailContainer');
+            const detailTitle = document.getElementById('modalDetailTitle');
 
+            const titles = { 
+                impressions: 'Google Eksponeringer', clicks: 'Google Klik', conversions: 'Konverteringer', 
+                cost: 'Google Forbrug', cpa: 'Pris pr. Google konv.', ctr: 'Google Klikrate (CTR)', 
+                cpc: 'Google Gns. CPC', conv_booking: 'Booking System', conv_calls: 'Opkald', 
+                conv_web: 'E-mail Klik', conv_forms: 'Formularer',
+                meta_impressions: 'Meta Eksponeringer', meta_reach: 'Meta Rækkevidde', 
+                meta_clicks: 'Meta Link-klik', meta_cost: 'Meta Forbrug', 
+                meta_cpc: 'Meta Gns. CPC', meta_ctr: 'Meta Klikrate (CTR)'
+            };
+            
+            const colors = { blue: 'bg-blue-100 text-blue-600', yellow: 'bg-yellow-100 text-yellow-600', green: 'bg-green-100 text-green-600', red: 'bg-red-100 text-red-600', indigo: 'bg-indigo-100 text-indigo-600' };
 
-   <!-- Global Modal Overlay -->
-   <div id="modalOverlay" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 modal-overlay hidden-modal" onclick="closeModal(event)">
-       <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl modal-content p-8 relative max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
-           <button onclick="closeModal(event)" class="absolute top-6 right-6 text-gray-400 hover:text-gray-600">
-               <i class="fas fa-times text-xl"></i>
-           </button>
-           <div id="modalIconContainer" class="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-6"></div>
-           <h2 id="modalTitle" class="text-2xl font-bold text-gray-800 mb-2"></h2>
-           <p id="modalDefinition" class="text-gray-600 text-sm leading-relaxed mb-6 italic"></p>
-          
-           <div class="bg-gray-50 rounded-2xl p-6 mb-6">
-               <div class="flex justify-between items-end mb-4">
-                   <p class="text-xs font-bold text-gray-400 uppercase">Status valgt periode</p>
-                   <div class="flex flex-col items-end">
-                       <p id="modalValue" class="text-3xl font-bold text-gray-800"></p>
-                       <span id="modalValueChange" class="change-badge mt-1"></span>
-                   </div>
-               </div>
-           </div>
-          
-           <div class="space-y-4">
-               <h4 id="modalDetailTitle" class="font-bold text-gray-800 text-sm uppercase tracking-wide border-b pb-2">Detaljeret Indblik</h4>
-               <div id="modalDetailContainer" class="divide-y divide-gray-100">
-                   <!-- Dynamic content injected here -->
-               </div>
-           </div>
+            iconContainer.className = `w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-6 ${colors[detail.color]}`;
+            iconContainer.innerHTML = `<i class="fas ${detail.icon}"></i>`;
+            title.innerText = titles[metricType];
+            def.innerText = detail.def;
+            
+            const currentValStr = getMetricValue(currentMonth, metricType);
+            const currentValNum = parseVal(currentValStr);
+            value.innerText = currentValStr;
 
+            const currentChange = mData.changes ? mData.changes[metricType] : null;
+            if (currentChange) {
+                valueChange.style.display = 'inline-flex';
+                valueChange.className = `change-badge mt-1 ${currentChange.pos ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`;
+                valueChange.innerHTML = `<i class="fas fa-arrow-${currentChange.val.startsWith('+') ? 'up' : 'down'} mr-1"></i> ${currentChange.val} vs forrige måned`;
+            } else {
+                valueChange.style.display = 'none';
+            }
 
-           <button onclick="closeModal(event)" class="w-full mt-8 bg-gray-800 text-white font-bold py-4 rounded-xl hover:bg-gray-900 transition-colors">
-               Luk vindue
-           </button>
-       </div>
-   </div>
+            detailContainer.innerHTML = '';
+            
+            if (mData.channels && mData.channels[metricType]) {
+                detailTitle.innerText = "Kanal Fordeling (GA4)";
+                const channels = mData.channels[metricType];
+                Object.entries(channels).sort((a,b) => b[1] - a[1]).forEach(([channel, val]) => {
+                    const row = document.createElement('div');
+                    row.className = 'channel-row';
+                    row.innerHTML = `
+                        <span class="text-sm font-medium text-gray-600">${channel}</span>
+                        <span class="text-sm font-bold text-gray-800">${val}</span>
+                    `;
+                    detailContainer.appendChild(row);
+                });
+            } else {
+                detailTitle.innerText = "Sammenligning med tidligere";
+                let historyCount = 0;
+                for (let i = currentIdx - 1; i >= 0 && historyCount < 3; i--) {
+                    const histMonth = monthOrder[i];
+                    const histValStr = getMetricValue(histMonth, metricType);
+                    const histValNum = parseVal(histValStr);
+                    
+                    let pct = histValNum === 0 ? 0 : ((currentValNum - histValNum) / histValNum) * 100;
+                    let isGood = pct > 0;
+                    if (metricType.includes('cost') || metricType.includes('cpa') || metricType.includes('cpc')) isGood = pct < 0;
+                    
+                    const pctStr = (pct >= 0 ? '+' : '') + pct.toFixed(0) + '%';
+                    const colorClass = isGood ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50';
+                    const icon = pct >= 0 ? 'fa-arrow-up' : 'fa-arrow-down';
 
+                    const row = document.createElement('div');
+                    row.className = 'flex justify-between items-center py-3 border-b border-gray-50';
+                    row.innerHTML = `
+                        <div class="flex flex-col">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">${histMonth}</span>
+                            <span class="text-sm font-bold text-gray-700">${histValStr}</span>
+                        </div>
+                        <span class="text-[10px] font-bold ${colorClass} px-2 py-1 rounded-full flex items-center">
+                            <i class="fas ${icon} mr-1"></i> ${pctStr}
+                        </span>
+                    `;
+                    detailContainer.appendChild(row);
+                    historyCount++;
+                }
+                if (historyCount === 0) {
+                    detailContainer.innerHTML = '<p class="text-xs text-gray-400 italic py-4">Ingen historik tilgængelig endnu.</p>';
+                }
+            }
 
-   <script>
-       let currentMonth = 'marts';
-       const monthOrder = ['januar', 'februar', 'marts'];
-      
-       const data = {
-           januar: {
-               dateRange: "1. jan 2026 - 31. jan 2026",
-               impressions: "65.973", clicks: "1.685", ctr: "2,55%", conversions: "333", cost: "14.793,17 kr.", cpc: "8,78 kr.", cpa: "44,46 kr.",
-               conversionTypes: { booking: 264, calls: 115, websiteClicks: 12, forms: 8 },
-               channels: {
-                   conv_booking: { "PerformanceMax": 174, "Direkte link": 20, "Organisk Søgning": 13, "Organisk SoMe": 6, "Google Ads": 32, "Paid Social": 12, "Refereret": 1, "Unassigned": 6 },
-                   conv_calls: { "PerformanceMax": 76, "Direkte link": 11, "Organisk Søgning": 8, "Google Ads": 15, "Paid Social": 3, "Unassigned": 2 },
-                   conv_web: { "PerformanceMax": 8, "Direkte link": 1, "Organisk Søgning": 2, "Organisk SoMe": 1 },
-                   conv_forms: { "PerformanceMax": 7, "Paid Social": 1 }
-               },
-               metaAds: { impressions: "40.233", reach: "12.033", clicks: "489", cost: "4.560,25 kr.", cpc: "9,33 kr.", ctr: "1,22%" },
-               changes: null,
-               modalDetails: {
-                   impressions: { icon: 'fa-search', color: 'blue', def: 'Visninger af dine annoncer på Google.' },
-                   clicks: { icon: 'fa-mouse-pointer', color: 'yellow', def: 'Klik på dine Google søge- og PerformanceMax annoncer.' },
-                   conversions: { icon: 'fa-shopping-cart', color: 'green', def: 'Samlet antal henvendelser sporet via Google Ads.' },
-                   cost: { icon: 'fa-coins', color: 'red', def: 'Den samlede annonce-investering på Google.' },
-                   cpa: { icon: 'fa-hand-holding-usd', color: 'blue', def: 'Prisen pr. henvendelse i gennemsnit på Google.' },
-                   ctr: { icon: 'fa-percentage', color: 'yellow', def: 'Klikrate på Google Ads.' },
-                   cpc: { icon: 'fa-tag', color: 'red', def: 'Gennemsnitsprisen pr. klik på Google.' },
-                   conv_booking: { icon: 'fa-calendar-check', color: 'blue', def: 'Gennemførte klik til bookingsystemet.' },
-                   conv_calls: { icon: 'fa-phone-volume', color: 'green', def: 'Direkte telefonopkald via websitet.' },
-                   conv_web: { icon: 'fa-envelope', color: 'indigo', def: 'Klik på e-mail adresser.' },
-                   conv_forms: { icon: 'fa-file-contract', color: 'red', def: 'Indsendte kontaktformularer.' },
-                   meta_impressions: { icon: 'fa-eye', color: 'blue', def: 'Antal gange din Meta annonce er vist.' },
-                   meta_reach: { icon: 'fa-users', color: 'blue', def: 'Antal unikke personer der har set annoncen på Meta.' },
-                   meta_clicks: { icon: 'fa-hand-pointer', color: 'yellow', def: 'Antal link-klik på Meta annoncer.' },
-                   meta_cost: { icon: 'fa-wallet', color: 'red', def: 'Samlet forbrug på Meta Ads platformen.' },
-                   meta_cpc: { icon: 'fa-tag', color: 'red', def: 'Gennemsnitspris pr. link-klik på Meta.' },
-                   meta_ctr: { icon: 'fa-chart-line', color: 'yellow', def: 'Klikrate (CTR) for dine Meta kampagner.' }
-               }
-           },
-           februar: {
-               dateRange: "1. feb 2026 - 28. feb 2026",
-               impressions: "27.428", clicks: "1.392", ctr: "5,08%", conversions: "271", cost: "14.451,32 kr.", cpc: "10,38 kr.", cpa: "53,33 kr.",
-               conversionTypes: { booking: 203, calls: 78, websiteClicks: 14, forms: 6 },
-               channels: {
-                   conv_booking: { "PerformanceMax": 152, "Direkte link": 9, "Organisk Søgning": 17, "Organisk SoMe": 10, "Google Ads": 3, "Paid Social": 12 },
-                   conv_calls: { "PerformanceMax": 51, "Direkte link": 6, "Organisk Søgning": 3, "Organisk SoMe": 2, "Google Ads": 13, "Paid Social": 2, "Unassigned": 1 },
-                   conv_web: { "PerformanceMax": 6, "Organisk Søgning": 5, "Organisk SoMe": 1, "Google Ads": 2 },
-                   conv_forms: { "PerformanceMax": 3, "Direkte link": 2, "Organisk Søgning": 1 }
-               },
-               metaAds: { impressions: "44.067", reach: "10.826", clicks: "506", cost: "4.188,81 kr.", cpc: "8,28 kr.", ctr: "1,15%" },
-               changes: {
-                   impressions: { val: '-58,4%', pos: false }, clicks: { val: '-17,4%', pos: false }, conversions: { val: '-18,6%', pos: false },
-                   cost: { val: '-2,3%', pos: true }, cpa: { val: '+20,0%', pos: false }, ctr: { val: '+99,2%', pos: true }, cpc: { val: '+18,2%', pos: false },
-                   meta_impressions: { val: '+9,5%', pos: true }, meta_reach: { val: '-10,0%', pos: false }, meta_clicks: { val: '+3,5%', pos: true },
-                   meta_cost: { val: '-8,1%', pos: true }, meta_cpc: { val: '-11,3%', pos: true }, meta_ctr: { val: '-5,7%', pos: false }
-               }
-           },
-           marts: {
-               dateRange: "1. mar 2026 - 31. mar 2026",
-               impressions: "8.266", clicks: "400", ctr: "4,84%", conversions: "98", cost: "4.459,93 kr.", cpc: "11,15 kr.", cpa: "45,51 kr.",
-               conversionTypes: { booking: 74, calls: 26, websiteClicks: 1, forms: 1 },
-               channels: {
-                   conv_booking: { "PerformanceMax": 50, "Direkte link": 1, "Organisk Søgning": 8, "Organisk SoMe": 1, "Google Ads": 3, "Paid Social": 1, "Unassigned": 10 },
-                   conv_calls: { "PerformanceMax": 18, "Organisk Søgning": 2, "Google Ads": 4, "Unassigned": 2 },
-                   conv_web: { "PerformanceMax": 1 },
-                   conv_forms: { "Direkte link": 1 }
-               },
-               metaAds: { impressions: "12.462", reach: "5.357", clicks: "82", cost: "1.477,98 kr.", cpc: "18,02 kr.", ctr: "0,66%" },
-               changes: {
-                   impressions: { val: '-69,8%', pos: false }, clicks: { val: '-71,3%', pos: false }, conversions: { val: '-63,8%', pos: false },
-                   cost: { val: '-69,1%', pos: true }, cpa: { val: '-14,6%', pos: true }, ctr: { val: '-4,7%', pos: false }, cpc: { val: '+7,4%', pos: false },
-                   meta_impressions: { val: '-71,7%', pos: false }, meta_reach: { val: '-50,5%', pos: false }, meta_clicks: { val: '-83,8%', pos: false },
-                   meta_cost: { val: '-64,7%', pos: true }, meta_cpc: { val: '+117,6%', pos: false }, meta_ctr: { val: '-42,6%', pos: false }
-               }
-           }
-       };
+            overlay.classList.remove('hidden-modal');
+            document.body.style.overflow = 'hidden';
+        }
 
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.add('hidden-modal');
+            document.body.style.overflow = 'auto';
+        }
 
-       function parseVal(str) {
-           if (!str) return 0;
-           if (typeof str === 'number') return str;
-           let cleaned = str.toString().replace(' kr.', '').replace('%', '').replace(/\./g, '').replace(',', '.').trim();
-           return parseFloat(cleaned) || 0;
-       }
+        function switchMonth(month) {
+            currentMonth = month;
+            const m = data[month];
+            
+            document.getElementById('dateRangeDisplay').innerHTML = `<i class="far fa-calendar-alt mr-2"></i>${m.dateRange}`;
+            document.getElementById('stat-impressions').innerText = m.impressions;
+            document.getElementById('stat-clicks').innerText = m.clicks;
+            document.getElementById('stat-conversions').innerText = m.conversions;
+            document.getElementById('stat-cost').innerText = m.cost;
+            document.getElementById('stat-cpa').innerText = m.cpa;
+            document.getElementById('stat-ctr-big').innerText = m.ctr;
+            document.getElementById('stat-cpc-big').innerText = m.cpc;
 
+            document.getElementById('stat-booking').innerText = m.conversionTypes.booking;
+            document.getElementById('stat-calls').innerText = m.conversionTypes.calls;
+            document.getElementById('stat-website-clicks').innerText = m.conversionTypes.websiteClicks;
+            document.getElementById('stat-forms').innerText = m.conversionTypes.forms;
 
-       function setChange(elementId, changeData) {
-           const el = document.getElementById(elementId);
-           if (!el) return;
-           if (!changeData) {
-               el.style.display = 'none';
-               return;
-           }
-           el.style.display = 'inline-flex';
-           el.className = `change-badge ${changeData.pos ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`;
-           el.innerHTML = `<i class="fas fa-arrow-${changeData.val.startsWith('+') ? 'up' : 'down'} mr-1"></i> ${changeData.val}`;
-       }
+            // Meta Stats
+            document.getElementById('meta-impressions').innerText = m.metaAds.impressions;
+            document.getElementById('meta-reach').innerText = m.metaAds.reach;
+            document.getElementById('meta-clicks').innerText = m.metaAds.clicks;
+            document.getElementById('meta-cost').innerText = m.metaAds.cost;
+            document.getElementById('meta-cpc').innerText = m.metaAds.cpc;
+            document.getElementById('meta-ctr').innerText = m.metaAds.ctr;
 
+            // Update Badges
+            if (m.changes) {
+                setChange('change-impressions', m.changes.impressions);
+                setChange('change-clicks', m.changes.clicks);
+                setChange('change-conversions', m.changes.conversions);
+                setChange('change-cost', m.changes.cost);
+                setChange('change-cpa', m.changes.cpa);
+                setChange('change-ctr', m.changes.ctr);
+                setChange('change-cpc-evol', m.changes.cpc);
+                
+                // Meta Badges
+                setChange('change-meta-impressions', m.changes.meta_impressions);
+                setChange('change-meta-reach', m.changes.meta_reach);
+                setChange('change-meta-clicks', m.changes.meta_clicks);
+                setChange('change-meta-cost', m.changes.meta_cost);
+                setChange('change-meta-cpc', m.changes.meta_cpc);
+                setChange('change-meta-ctr', m.changes.meta_ctr);
+            } else {
+                ['change-impressions', 'change-clicks', 'change-conversions', 'change-cost', 'change-cpa', 'change-ctr', 'change-cpc-evol', 'change-meta-impressions', 'change-meta-reach', 'change-meta-clicks', 'change-meta-cost', 'change-meta-cpc', 'change-meta-ctr'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.display = 'none';
+                });
+            }
 
-       function getMetricValue(month, metricType) {
-           const m = data[month];
-           if (metricType.startsWith('meta_')) {
-               const cleanType = metricType.replace('meta_', '');
-               return m.metaAds[cleanType];
-           }
-           if(metricType === 'impressions') return m.impressions;
-           if(metricType === 'clicks') return m.clicks;
-           if(metricType === 'conversions') return m.conversions;
-           if(metricType === 'cost') return m.cost;
-           if(metricType === 'cpa') return m.cpa;
-           if(metricType === 'ctr') return m.ctr;
-           if(metricType === 'cpc') return m.cpc;
-           if(metricType === 'conv_booking') return m.conversionTypes.booking;
-           if(metricType === 'conv_calls') return m.conversionTypes.calls;
-           if(metricType === 'conv_web') return m.conversionTypes.websiteClicks;
-           if(metricType === 'conv_forms') return m.conversionTypes.forms;
-           return "0";
-       }
+            monthOrder.forEach(mon => {
+                const tab = document.getElementById(`tab-${mon}`);
+                if (tab) tab.classList.remove('tab-active');
+            });
+            const activeTab = document.getElementById(`tab-${month}`);
+            if (activeTab) activeTab.classList.add('tab-active');
+        }
 
-
-       function openModal(metricType) {
-           const currentIdx = monthOrder.indexOf(currentMonth);
-           const mData = data[currentMonth];
-           const detail = data.januar.modalDetails[metricType];
-          
-           const overlay = document.getElementById('modalOverlay');
-           const iconContainer = document.getElementById('modalIconContainer');
-           const title = document.getElementById('modalTitle');
-           const def = document.getElementById('modalDefinition');
-           const value = document.getElementById('modalValue');
-           const valueChange = document.getElementById('modalValueChange');
-           const detailContainer = document.getElementById('modalDetailContainer');
-           const detailTitle = document.getElementById('modalDetailTitle');
-
-
-           const titles = {
-               impressions: 'Google Eksponeringer', clicks: 'Google Klik', conversions: 'Konverteringer',
-               cost: 'Google Forbrug', cpa: 'Pris pr. Google konv.', ctr: 'Google Klikrate (CTR)',
-               cpc: 'Google Gns. CPC', conv_booking: 'Booking System', conv_calls: 'Opkald',
-               conv_web: 'E-mail Klik', conv_forms: 'Formularer',
-               meta_impressions: 'Meta Eksponeringer', meta_reach: 'Meta Rækkevidde',
-               meta_clicks: 'Meta Link-klik', meta_cost: 'Meta Forbrug',
-               meta_cpc: 'Meta Gns. CPC', meta_ctr: 'Meta Klikrate (CTR)'
-           };
-          
-           const colors = { blue: 'bg-blue-100 text-blue-600', yellow: 'bg-yellow-100 text-yellow-600', green: 'bg-green-100 text-green-600', red: 'bg-red-100 text-red-600', indigo: 'bg-indigo-100 text-indigo-600' };
-
-
-           iconContainer.className = `w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-6 ${colors[detail.color]}`;
-           iconContainer.innerHTML = `<i class="fas ${detail.icon}"></i>`;
-           title.innerText = titles[metricType];
-           def.innerText = detail.def;
-          
-           const currentValStr = getMetricValue(currentMonth, metricType);
-           const currentValNum = parseVal(currentValStr);
-           value.innerText = currentValStr;
-
-
-           const currentChange = mData.changes ? mData.changes[metricType] : null;
-           if (currentChange) {
-               valueChange.style.display = 'inline-flex';
-               valueChange.className = `change-badge mt-1 ${currentChange.pos ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`;
-               valueChange.innerHTML = `<i class="fas fa-arrow-${currentChange.val.startsWith('+') ? 'up' : 'down'} mr-1"></i> ${currentChange.val} vs forrige måned`;
-           } else {
-               valueChange.style.display = 'none';
-           }
-
-
-           detailContainer.innerHTML = '';
-          
-           if (mData.channels && mData.channels[metricType]) {
-               detailTitle.innerText = "Kanal Fordeling (GA4)";
-               const channels = mData.channels[metricType];
-               Object.entries(channels).sort((a,b) => b[1] - a[1]).forEach(([channel, val]) => {
-                   const row = document.createElement('div');
-                   row.className = 'channel-row';
-                   row.innerHTML = `
-                       <span class="text-sm font-medium text-gray-600">${channel}</span>
-                       <span class="text-sm font-bold text-gray-800">${val}</span>
-                   `;
-                   detailContainer.appendChild(row);
-               });
-           } else {
-               detailTitle.innerText = "Sammenligning med tidligere";
-               let historyCount = 0;
-               for (let i = currentIdx - 1; i >= 0 && historyCount < 3; i--) {
-                   const histMonth = monthOrder[i];
-                   const histValStr = getMetricValue(histMonth, metricType);
-                   const histValNum = parseVal(histValStr);
-                  
-                   let pct = histValNum === 0 ? 0 : ((currentValNum - histValNum) / histValNum) * 100;
-                   let isGood = pct > 0;
-                   if (metricType.includes('cost') || metricType.includes('cpa') || metricType.includes('cpc')) isGood = pct < 0;
-                  
-                   const pctStr = (pct >= 0 ? '+' : '') + pct.toFixed(0) + '%';
-                   const colorClass = isGood ? 'text-green-600 bg-green-50' : 'text-red-600 bg-red-50';
-                   const icon = pct >= 0 ? 'fa-arrow-up' : 'fa-arrow-down';
-
-
-                   const row = document.createElement('div');
-                   row.className = 'flex justify-between items-center py-3 border-b border-gray-50';
-                   row.innerHTML = `
-                       <div class="flex flex-col">
-                           <span class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">${histMonth}</span>
-                           <span class="text-sm font-bold text-gray-700">${histValStr}</span>
-                       </div>
-                       <span class="text-[10px] font-bold ${colorClass} px-2 py-1 rounded-full flex items-center">
-                           <i class="fas ${icon} mr-1"></i> ${pctStr}
-                       </span>
-                   `;
-                   detailContainer.appendChild(row);
-                   historyCount++;
-               }
-               if (historyCount === 0) {
-                   detailContainer.innerHTML = '<p class="text-xs text-gray-400 italic py-4">Ingen historik tilgængelig endnu.</p>';
-               }
-           }
-
-
-           overlay.classList.remove('hidden-modal');
-           document.body.style.overflow = 'hidden';
-       }
-
-
-       function closeModal() {
-           document.getElementById('modalOverlay').classList.add('hidden-modal');
-           document.body.style.overflow = 'auto';
-       }
-
-
-       function switchMonth(month) {
-           currentMonth = month;
-           const m = data[month];
-          
-           document.getElementById('dateRangeDisplay').innerHTML = `<i class="far fa-calendar-alt mr-2"></i>${m.dateRange}`;
-           document.getElementById('stat-impressions').innerText = m.impressions;
-           document.getElementById('stat-clicks').innerText = m.clicks;
-           document.getElementById('stat-conversions').innerText = m.conversions;
-           document.getElementById('stat-cost').innerText = m.cost;
-           document.getElementById('stat-cpa').innerText = m.cpa;
-           document.getElementById('stat-ctr-big').innerText = m.ctr;
-           document.getElementById('stat-cpc-big').innerText = m.cpc;
-
-
-           document.getElementById('stat-booking').innerText = m.conversionTypes.booking;
-           document.getElementById('stat-calls').innerText = m.conversionTypes.calls;
-           document.getElementById('stat-website-clicks').innerText = m.conversionTypes.websiteClicks;
-           document.getElementById('stat-forms').innerText = m.conversionTypes.forms;
-
-
-           // Meta Stats
-           document.getElementById('meta-impressions').innerText = m.metaAds.impressions;
-           document.getElementById('meta-reach').innerText = m.metaAds.reach;
-           document.getElementById('meta-clicks').innerText = m.metaAds.clicks;
-           document.getElementById('meta-cost').innerText = m.metaAds.cost;
-           document.getElementById('meta-cpc').innerText = m.metaAds.cpc;
-           document.getElementById('meta-ctr').innerText = m.metaAds.ctr;
-
-
-           // Update Badges
-           if (m.changes) {
-               setChange('change-impressions', m.changes.impressions);
-               setChange('change-clicks', m.changes.clicks);
-               setChange('change-conversions', m.changes.conversions);
-               setChange('change-cost', m.changes.cost);
-               setChange('change-cpa', m.changes.cpa);
-               setChange('change-ctr', m.changes.ctr);
-               setChange('change-cpc-evol', m.changes.cpc);
-              
-               // Meta Badges
-               setChange('change-meta-impressions', m.changes.meta_impressions);
-               setChange('change-meta-reach', m.changes.meta_reach);
-               setChange('change-meta-clicks', m.changes.meta_clicks);
-               setChange('change-meta-cost', m.changes.meta_cost);
-               setChange('change-meta-cpc', m.changes.meta_cpc);
-               setChange('change-meta-ctr', m.changes.meta_ctr);
-           } else {
-               ['change-impressions', 'change-clicks', 'change-conversions', 'change-cost', 'change-cpa', 'change-ctr', 'change-cpc-evol', 'change-meta-impressions', 'change-meta-reach', 'change-meta-clicks', 'change-meta-cost', 'change-meta-cpc', 'change-meta-ctr'].forEach(id => {
-                   const el = document.getElementById(id);
-                   if (el) el.style.display = 'none';
-               });
-           }
-
-
-           monthOrder.forEach(mon => {
-               const tab = document.getElementById(`tab-${mon}`);
-               if (tab) tab.classList.remove('tab-active');
-           });
-           const activeTab = document.getElementById(`tab-${month}`);
-           if (activeTab) activeTab.classList.add('tab-active');
-       }
-
-
-       window.onload = () => switchMonth('marts');
-   </script>
+        window.onload = () => switchMonth('marts');
+    </script>
 </body>
 </html>
-
