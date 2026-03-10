@@ -63,12 +63,6 @@
                 <p class="text-gray-500 font-medium italic">TrygTand | Google Ads & GA4</p>
             </div>
             <div class="flex flex-col md:flex-row items-center gap-3">
-                <a href="https://docs.google.com/spreadsheets/d/12Cfn8ckG9tEgFkSexFTqq9XqxEvHvXeWxyQ3tQA59eA/edit?usp=sharing" 
-                   target="_blank"
-                   class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-gray-600 bg-white border border-gray-200 rounded-full hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm">
-                    <i class="fas fa-table text-green-600"></i>
-                    Se Rådata
-                </a>
                 <span class="bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold" id="dateRangeDisplay">
                     <i class="far fa-calendar-alt mr-2"></i>1. mar 2026 - 31. mar 2026
                 </span>
@@ -109,7 +103,7 @@
             <div onclick="openModal('conversions')" class="metric-card bg-white p-6 rounded-2xl shadow-sm border-l-4 border-green-500 group">
                 <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 flex justify-between">Konverteringer <i class="fas fa-expand-alt text-[10px] mt-1 opacity-20 group-hover:opacity-100 transition-opacity"></i></p>
                 <div class="flex items-baseline gap-2">
-                    <h3 class="text-2xl font-bold text-gray-800" id="stat-conversions">28</h3>
+                    <h3 class="text-2xl font-bold text-gray-800" id="stat-conversions">102</h3>
                     <span id="change-conversions" class="change-badge"></span>
                 </div>
                 <p class="text-green-600 text-[10px] mt-3 font-bold uppercase tracking-tight" id="stat-conv-rate">Rate: 24,50%</p>
@@ -131,7 +125,7 @@
                 <div onclick="openModal('cpa')" class="cursor-pointer group">
                     <p class="text-gray-500 text-sm mb-1 group-hover:text-blue-600 transition-colors">Pris pr. konvertering <i class="fas fa-expand-alt text-[8px] opacity-0 group-hover:opacity-100"></i></p>
                     <div class="flex flex-col items-center">
-                        <p class="text-3xl font-bold text-gray-800" id="stat-cpa">159,28 kr.</p>
+                        <p class="text-3xl font-bold text-gray-800" id="stat-cpa">43,72 kr.</p>
                         <span id="change-cpa" class="change-badge mt-1"></span>
                     </div>
                 </div>
@@ -157,31 +151,40 @@
         <!-- Conversion Details Section -->
         <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
             <h4 class="text-center text-lg font-bold text-gray-800 mb-8 uppercase tracking-widest text-sm">Henvendelser fordelt (GA4)</h4>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div onclick="openModal('conv_calls')" class="metric-card flex items-center p-5 bg-blue-50 rounded-2xl border border-blue-100 group">
-                    <div class="w-12 h-12 bg-blue-500 text-white rounded-xl flex items-center justify-center text-xl mr-4 shadow-sm group-hover:scale-110 transition-transform">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div onclick="openModal('conv_booking')" class="metric-card flex flex-col p-5 bg-blue-50 rounded-2xl border border-blue-100 group">
+                    <div class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg mb-3 shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-[10px] font-bold text-blue-600 uppercase tracking-wide">Booking System</p>
+                        <p class="text-2xl font-bold text-gray-800" id="stat-booking">74</p>
+                    </div>
+                </div>
+                <div onclick="openModal('conv_calls')" class="metric-card flex flex-col p-5 bg-emerald-50 rounded-2xl border border-emerald-100 group">
+                    <div class="w-10 h-10 bg-emerald-600 text-white rounded-xl flex items-center justify-center text-lg mb-3 shadow-sm group-hover:scale-110 transition-transform">
                         <i class="fas fa-phone-volume"></i>
                     </div>
                     <div class="flex-1">
-                        <p class="text-xs font-bold text-blue-600 uppercase tracking-wide flex justify-between">Opkald <i class="fas fa-plus-circle opacity-30 text-[10px] group-hover:opacity-100"></i></p>
+                        <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-wide">Opkald</p>
                         <p class="text-2xl font-bold text-gray-800" id="stat-calls">26</p>
                     </div>
                 </div>
-                <div onclick="openModal('conv_web')" class="metric-card flex items-center p-5 bg-indigo-50 rounded-2xl border border-indigo-100 group">
-                    <div class="w-12 h-12 bg-indigo-500 text-white rounded-xl flex items-center justify-center text-xl mr-4 shadow-sm group-hover:scale-110 transition-transform">
+                <div onclick="openModal('conv_web')" class="metric-card flex flex-col p-5 bg-indigo-50 rounded-2xl border border-indigo-100 group">
+                    <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center text-lg mb-3 shadow-sm group-hover:scale-110 transition-transform">
                         <i class="fas fa-envelope"></i>
                     </div>
                     <div class="flex-1">
-                        <p class="text-xs font-bold text-indigo-600 uppercase tracking-wide flex justify-between">E-mail Klik <i class="fas fa-plus-circle opacity-30 text-[10px] group-hover:opacity-100"></i></p>
+                        <p class="text-[10px] font-bold text-indigo-600 uppercase tracking-wide">E-mail Klik</p>
                         <p class="text-2xl font-bold text-gray-800" id="stat-website-clicks">1</p>
                     </div>
                 </div>
-                <div onclick="openModal('conv_forms')" class="metric-card flex items-center p-5 bg-green-50 rounded-2xl border border-green-100 group">
-                    <div class="w-12 h-12 bg-green-500 text-white rounded-xl flex items-center justify-center text-xl mr-4 shadow-sm group-hover:scale-110 transition-transform">
+                <div onclick="openModal('conv_forms')" class="metric-card flex flex-col p-5 bg-amber-50 rounded-2xl border border-amber-100 group">
+                    <div class="w-10 h-10 bg-amber-600 text-white rounded-xl flex items-center justify-center text-lg mb-3 shadow-sm group-hover:scale-110 transition-transform">
                         <i class="fas fa-file-contract"></i>
                     </div>
                     <div class="flex-1">
-                        <p class="text-xs font-bold text-green-600 uppercase tracking-wide flex justify-between">Formularer <i class="fas fa-plus-circle opacity-30 text-[10px] group-hover:opacity-100"></i></p>
+                        <p class="text-[10px] font-bold text-amber-600 uppercase tracking-wide">Formularer</p>
                         <p class="text-2xl font-bold text-gray-800" id="stat-forms">1</p>
                     </div>
                 </div>
@@ -234,11 +237,12 @@
         const data = {
             januar: {
                 dateRange: "1. jan 2026 - 31. jan 2026",
-                impressions: "65.973", clicks: "1.685", ctr: "2,55%", conversions: "135", convRate: "19,75%", cost: "14.793,17 kr.", cpc: "8,78 kr.", cpa: "109,58 kr.", ctrBig: "2,55 %", cpcBig: "8,78 kr.",
+                impressions: "65.973", clicks: "1.685", ctr: "2,55%", conversions: "399", convRate: "19,75%", cost: "14.793,17 kr.", cpc: "8,78 kr.", cpa: "37,07 kr.",
                 conversionTypes: { 
-                    calls: 115, websiteClicks: 12, forms: 8 
+                    booking: 264, calls: 115, websiteClicks: 12, forms: 8 
                 },
                 channels: {
+                    conv_booking: { "PerformanceMax": 174, "Direkte link": 20, "Organisk Søgning": 13, "Organisk SoMe": 6, "Google Ads": 32, "Paid Social": 12, "Refereret": 1, "Unassigned": 6 },
                     conv_calls: { "PerformanceMax": 76, "Direkte link": 11, "Organisk Søgning": 8, "Google Ads": 15, "Paid Social": 3, "Unassigned": 2 },
                     conv_web: { "PerformanceMax": 8, "Direkte link": 1, "Organisk Søgning": 2, "Organisk SoMe": 1 },
                     conv_forms: { "PerformanceMax": 7, "Paid Social": 1 }
@@ -247,46 +251,49 @@
                 modalDetails: {
                     impressions: { icon: 'fa-search', color: 'blue', def: 'Visninger af dine annoncer.' },
                     clicks: { icon: 'fa-mouse-pointer', color: 'yellow', def: 'Brugere der har klikket på annoncen.' },
-                    conversions: { icon: 'fa-shopping-cart', color: 'green', def: 'Samlet antal henvendelser (opkald, mail, formularer).' },
+                    conversions: { icon: 'fa-shopping-cart', color: 'green', def: 'Samlet antal henvendelser (booking, opkald, mail, formularer).' },
                     cost: { icon: 'fa-coins', color: 'red', def: 'Den samlede annonce-investering.' },
                     cpa: { icon: 'fa-hand-holding-usd', color: 'blue', def: 'Prisen pr. henvendelse i gennemsnit.' },
                     ctr: { icon: 'fa-percentage', color: 'yellow', def: 'Hvor mange der klikker ud af dem der ser annoncen.' },
                     cpc: { icon: 'fa-tag', color: 'red', def: 'Gennemsnitsprisen pr. klik.' },
-                    conv_calls: { icon: 'fa-phone-volume', color: 'blue', def: 'Direkte telefonopkald via websitet.' },
+                    conv_booking: { icon: 'fa-calendar-check', color: 'blue', def: 'Gennemførte klik til bookingsystemet.' },
+                    conv_calls: { icon: 'fa-phone-volume', color: 'green', def: 'Direkte telefonopkald via websitet.' },
                     conv_web: { icon: 'fa-envelope', color: 'indigo', def: 'Klik på e-mail adresser.' },
-                    conv_forms: { icon: 'fa-file-contract', color: 'green', def: 'Indsendte kontaktformularer.' }
+                    conv_forms: { icon: 'fa-file-contract', color: 'red', def: 'Indsendte kontaktformularer.' }
                 }
             },
             februar: {
                 dateRange: "1. feb 2026 - 28. feb 2026",
-                impressions: "27.428", clicks: "1.392", ctr: "5,08%", conversions: "98", convRate: "19,45%", cost: "14.451,32 kr.", cpc: "10,38 kr.", cpa: "147,46 kr.", ctrBig: "5,08 %", cpcBig: "10,38 kr.",
+                impressions: "27.428", clicks: "1.392", ctr: "5,08%", conversions: "301", convRate: "19,45%", cost: "14.451,32 kr.", cpc: "10,38 kr.", cpa: "48,01 kr.",
                 conversionTypes: { 
-                    calls: 78, websiteClicks: 14, forms: 6 
+                    booking: 203, calls: 78, websiteClicks: 14, forms: 6 
                 },
                 channels: {
+                    conv_booking: { "PerformanceMax": 152, "Direkte link": 9, "Organisk Søgning": 17, "Organisk SoMe": 10, "Google Ads": 3, "Paid Social": 12 },
                     conv_calls: { "PerformanceMax": 51, "Direkte link": 6, "Organisk Søgning": 3, "Organisk SoMe": 2, "Google Ads": 13, "Paid Social": 2, "Unassigned": 1 },
                     conv_web: { "PerformanceMax": 6, "Organisk Søgning": 5, "Organisk SoMe": 1, "Google Ads": 2 },
                     conv_forms: { "PerformanceMax": 3, "Direkte link": 2, "Organisk Søgning": 1 }
                 },
                 changes: {
-                    impressions: { val: '-58%', pos: false }, clicks: { val: '-17%', pos: false }, conversions: { val: '-27%', pos: false },
-                    cost: { val: '-2%', pos: true }, cpa: { val: '+34%', pos: false }, ctr: { val: '+99%', pos: true }, cpc: { val: '+18%', pos: false }
+                    impressions: { val: '-58%', pos: false }, clicks: { val: '-17%', pos: false }, conversions: { val: '-24%', pos: false },
+                    cost: { val: '-2%', pos: true }, cpa: { val: '+29%', pos: false }, ctr: { val: '+99%', pos: true }, cpc: { val: '+18%', pos: false }
                 }
             },
             marts: {
                 dateRange: "1. mar 2026 - 31. mar 2026",
-                impressions: "8.266", clicks: "400", ctr: "4,84%", conversions: "28", convRate: "24,50%", cost: "4.459,93 kr.", cpc: "11,15 kr.", cpa: "159,28 kr.", ctrBig: "4,84 %", cpcBig: "11,15 kr.",
+                impressions: "8.266", clicks: "400", ctr: "4,84%", conversions: "102", convRate: "24,50%", cost: "4.459,93 kr.", cpc: "11,15 kr.", cpa: "43,72 kr.",
                 conversionTypes: { 
-                    calls: 26, websiteClicks: 1, forms: 1 
+                    booking: 74, calls: 26, websiteClicks: 1, forms: 1 
                 },
                 channels: {
+                    conv_booking: { "PerformanceMax": 50, "Direkte link": 1, "Organisk Søgning": 8, "Organisk SoMe": 1, "Google Ads": 3, "Paid Social": 1, "Unassigned": 10 },
                     conv_calls: { "PerformanceMax": 18, "Organisk Søgning": 2, "Google Ads": 4, "Unassigned": 2 },
                     conv_web: { "PerformanceMax": 1 },
                     conv_forms: { "Direkte link": 1 }
                 },
                 changes: {
-                    impressions: { val: '-70%', pos: false }, clicks: { val: '-71%', pos: false }, conversions: { val: '-71%', pos: false },
-                    cost: { val: '-69%', pos: true }, cpa: { val: '+8%', pos: false }, ctr: { val: '-5%', pos: false }, cpc: { val: '+7%', pos: false }
+                    impressions: { val: '-70%', pos: false }, clicks: { val: '-71%', pos: false }, conversions: { val: '-66%', pos: false },
+                    cost: { val: '-69%', pos: true }, cpa: { val: '-9%', pos: true }, ctr: { val: '-5%', pos: false }, cpc: { val: '+7%', pos: false }
                 }
             }
         };
@@ -318,6 +325,7 @@
             if(metricType === 'cpa') return m.cpa;
             if(metricType === 'ctr') return m.ctr;
             if(metricType === 'cpc') return m.cpc;
+            if(metricType === 'conv_booking') return m.conversionTypes.booking;
             if(metricType === 'conv_calls') return m.conversionTypes.calls;
             if(metricType === 'conv_web') return m.conversionTypes.websiteClicks;
             if(metricType === 'conv_forms') return m.conversionTypes.forms;
@@ -341,7 +349,7 @@
             const titles = { 
                 impressions: 'Eksponeringer', clicks: 'Klik', conversions: 'Konverteringer', 
                 cost: 'Annonceforbrug', cpa: 'Pris pr. konv.', ctr: 'Klikrate (CTR)', 
-                cpc: 'Gns. CPC', conv_calls: 'Opkald', conv_web: 'E-mail Klik', conv_forms: 'Formularer' 
+                cpc: 'Gns. CPC', conv_booking: 'Booking System', conv_calls: 'Opkald', conv_web: 'E-mail Klik', conv_forms: 'Formularer' 
             };
             const colors = { blue: 'bg-blue-100 text-blue-600', yellow: 'bg-yellow-100 text-yellow-600', green: 'bg-green-100 text-green-600', red: 'bg-red-100 text-red-600', indigo: 'bg-indigo-100 text-indigo-600' };
 
@@ -365,7 +373,6 @@
 
             detailContainer.innerHTML = '';
             
-            // Check if we have channel breakdown for this metric
             if (mData.channels && mData.channels[metricType]) {
                 detailTitle.innerText = "Kanal Fordeling (GA4)";
                 const channels = mData.channels[metricType];
@@ -379,7 +386,6 @@
                     detailContainer.appendChild(row);
                 });
             } else {
-                // Show history instead for non-conversion metrics
                 detailTitle.innerText = "Sammenligning med tidligere";
                 let historyCount = 0;
                 for (let i = currentIdx - 1; i >= 0 && historyCount < 3; i--) {
@@ -439,6 +445,7 @@
             document.getElementById('stat-ctr-big').innerText = m.ctr;
             document.getElementById('stat-cpc-big').innerText = m.cpc;
 
+            document.getElementById('stat-booking').innerText = m.conversionTypes.booking;
             document.getElementById('stat-calls').innerText = m.conversionTypes.calls;
             document.getElementById('stat-website-clicks').innerText = m.conversionTypes.websiteClicks;
             document.getElementById('stat-forms').innerText = m.conversionTypes.forms;
